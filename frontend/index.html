@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Language" content="ta" />
+  <title>வாணி — உங்கள் விவசாய உதவியாளர் | VAANI</title>
+  <meta name="description" content="VAANI - Tamil Nadu women farmers' AI-powered voice assistant for crop disease, market prices, government schemes, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="landing-page">
+
+  <!-- Animated background -->
+  <div class="bg-animated">
+    <div class="leaf leaf-1">🌿</div>
+    <div class="leaf leaf-2">🌾</div>
+    <div class="leaf leaf-3">🌻</div>
+    <div class="leaf leaf-4">🍃</div>
+    <div class="leaf leaf-5">🌿</div>
+  </div>
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle-bar">
+    <div id="google_translate_element" style="display:none;"></div>
+    <button id="lang-ta" class="lang-btn active" onclick="setLang('ta')">தமிழ்</button>
+    <span class="lang-sep">|</span>
+    <button id="lang-en" class="lang-btn" onclick="setLang('en')">English</button>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="vaani-logo-wrap">
+        <div class="vaani-emblem">
+          <span class="emblem-leaf">🌱</span>
+          <div class="emblem-rings">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="hero-title" id="hero-title">
+        <span class="title-vaani">வாணி</span>
+        <span class="title-divider">—</span>
+        <span class="title-sub" id="title-sub">உங்கள் விவசாய உதவியாளர்</span>
+      </h1>
+
+      <p class="hero-tagline" id="hero-tagline">
+        தமிழக பெண் விவசாயிகளுக்கான செயற்கை நுண்ணறிவு குரல் உதவியாளர்
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="stat-num">25+</span>
+          <span class="stat-label" id="stat1">அம்சங்கள்</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">38</span>
+          <span class="stat-label" id="stat2">மாவட்டங்கள்</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">தமிழ்</span>
+          <span class="stat-label" id="stat3">குரல் AI</span>
+        </div>
+      </div>
+
+      <!-- Login Card -->
+      <div class="login-card glass-card" id="login-card">
+        
+        <!-- Role Toggle -->
+        <div class="role-toggle">
+          <button id="role-farmer" class="role-btn active" onclick="switchRole('farmer')">விவசாயி / Farmer</button>
+          <button id="role-leader" class="role-btn" onclick="switchRole('leader')">குழு தலைவி / SHG Leader</button>
+          <button id="role-govt" class="role-btn" onclick="switchRole('govt')">அரசு / Govt</button>
+          <button id="role-buyer" class="role-btn" onclick="switchRole('buyer')">வாங்குபவர் / Buyer</button>
+        </div>
+
+        <h2 class="login-title" id="login-heading">உள்நுழைக</h2>
+
+        <!-- Phone Login -->
+        <div id="phone-step" class="login-step active">
+          <div class="input-group">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="phone-input" placeholder="கைபேசி எண் / Phone Number" maxlength="10" inputmode="numeric" />
+          </div>
+          <button class="btn-primary btn-full" onclick="sendOTP()" id="send-otp-btn">
+            <span id="otp-btn-text">OTP அனுப்பு</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <div class="demo-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+            <button class="btn-ghost" onclick="demoLogin('farmer')" style="background: rgba(0,0,0,0.03); color: var(--primary); font-weight: 600; padding: 8px; font-size: 13px;" id="farmer-demo-btn">
+              👩‍🌾 ஜேனி (Demo)
+            </button>
+            <button class="btn-ghost" onclick="demoLogin('husband_demo')" style="background: rgba(0,0,0,0.03); color: var(--primary); font-weight: 600; padding: 8px; font-size: 13px;" id="husband-demo-btn">
+              👨‍🌾 பழனிசாமி (Demo)
+            </button>
+            <button class="btn-ghost" onclick="demoLogin('govt')" style="background: rgba(0,0,0,0.03); color: var(--secondary); font-weight: 600; padding: 8px; font-size: 13px;" id="govt-demo-btn">
+              🏛️ அஸ்வின் (Admin)
+            </button>
+            <button class="btn-ghost" onclick="demoLogin('buyer')" style="background: rgba(0,0,0,0.03); color: var(--accent); font-weight: 600; padding: 8px; font-size: 13px;" id="buyer-demo-btn">
+              🛒 நவீன் (Buyer)
+            </button>
+          </div>
+          <p class="login-note" id="demo-note">📌 Demo: எந்த 10 இலக்க எண்ணும் பயன்படுத்தலாம்</p>
+        </div>
+
+        <!-- OTP Step -->
+        <div id="otp-step" class="login-step">
+          <p class="otp-sent-msg" id="otp-sent-msg">✅ OTP அனுப்பப்பட்டது</p>
+          <div class="otp-inputs" id="otp-inputs">
+            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" />
+          </div>
+          <button class="btn-primary btn-full" onclick="verifyOTP()" id="verify-btn">
+            சரிபார்க்கவும் <span class="btn-arrow">✓</span>
+          </button>
+          <button class="btn-ghost" onclick="backToPhone()" id="back-btn">← மாற்று</button>
+        </div>
+
+        <!-- Onboarding Step -->
+        <div id="onboarding-step" class="login-step">
+          <h3 class="onboard-title" id="onboard-heading">உங்களை அறிமுகப்படுத்துங்கள்</h3>
+          <div class="onboard-form">
+            <input type="text" id="ob-name" placeholder="பெயர் / Name" class="ob-input" />
+            <select id="ob-district" class="ob-input">
+              <option value="">மாவட்டம் தேர்ந்தெடுக்கவும்</option>
+            </select>
+            <select id="ob-crop" class="ob-input">
+              <option value="">முதன்மை பயிர் / Primary Crop</option>
+            </select>
+            <input type="number" id="ob-land" placeholder="நிலப்பரப்பு (ஏக்கர்) / Land (acres)" class="ob-input" step="0.5" min="0.5" />
+            <select id="ob-irrigation" class="ob-input">
+              <option value="rain-fed">மழை நீர் / Rain-fed</option>
+              <option value="drip">சொட்டு நீர் / Drip</option>
+              <option value="canal">கால்வாய் / Canal</option>
+              <option value="borewell">போர்வெல் / Borewell</option>
+              <option value="tank">குளம் / Tank</option>
+            </select>
+            <select id="ob-gender" class="ob-input">
+              <option value="female">பெண் விவாசயி / Female Farmer</option>
+              <option value="male">ஆண் விவாசயி / Male Farmer</option>
+            </select>
+            <label class="checkbox-row">
+              <input type="checkbox" id="ob-shg" />
+              <span id="ob-shg-label">சுய உதவி குழு உறுப்பினர் (SHG)</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="ob-bank" checked />
+              <span id="ob-bank-label">வங்கி கணக்கு உள்ளது</span>
+            </label>
+            <button class="btn-primary btn-full" onclick="completeOnboarding()" id="start-btn">
+              வாணியை தொடங்கவும்! 🌱
+            </button>
+          </div>
+        </div>
+
+        <!-- Govt Login Step -->
+        <div id="govt-login-step" class="login-step">
+          <div class="input-group">
+            <span class="input-icon">🆔</span>
+            <input type="text" id="govt-id" placeholder="அலுவலர் எண் / Dept ID" />
+          </div>
+          <div class="input-group">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="govt-pass" placeholder="கடவுச்சொல் / Password" />
+          </div>
+          <button class="btn-primary btn-full" id="govt-login-btn" onclick="loginGovt()">
+            உள்நுழைக <span class="btn-arrow">→</span>
+          </button>
+          <button class="btn-ghost btn-full mt-12" id="govt-demo-btn" onclick="demoLogin('govt')" style="margin-top: 12px; background: rgba(0,0,0,0.03); color: var(--primary); font-weight: 600;">
+            🚀 1-Click Ashwin (DAO) Demo
+          </button>
+        </div>
+
+        <!-- Buyer Login Step -->
+        <div id="buyer-login-step" class="login-step">
+          <div class="input-group">
+            <span class="input-icon">👤</span>
+            <input type="text" id="buyer-id" placeholder="வணிகர் எண் / Buyer ID" />
+          </div>
+          <div class="input-group" style="margin-top: 12px;">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="buyer-pass" placeholder="கடவுச்சொல் / Password" />
+          </div>
+          <button class="btn-primary btn-full mt-16" onclick="loginBuyer()" id="buyer-login-btn">
+            <span id="buyer-login-text">உள்நுழைக (Buyer)</span> <span class="btn-arrow">→</span>
+          </button>
+          <button class="btn-ghost btn-full" onclick="demoLogin('buyer')" style="margin-top: 12px; background: rgba(0,0,0,0.03); color: var(--primary); font-weight: 600;" id="buyer-demo-btn">
+            🚀 1-Click Buyer Demo
+          </button>
+          <p class="login-note">📌 Demo: ID 'buyer', Pass 'buyer'</p>
+        </div>
+
+      </div>
+
+      <!-- Features Preview -->
+      <div class="features-preview">
+        <p class="features-preview-title" id="features-heading">25+ AI அம்சங்கள்</p>
+        <div class="features-pills-scroll" id="features-pills-scroll">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // API URL detection similar to app.js
+    const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '8000' && window.location.protocol !== 'file:' 
+        ? 'http://localhost:8000' 
+        : (window.location.protocol === 'file:' ? 'http://localhost:8000' : '');
+    const API_BASE = API;
+    let currentLang = 'ta';
+    let phoneNumber = '';
+
+    const FEATURES_LIST = [
+      {icon:'🔬',ta:'நோய் கண்டறிதல்',en:'Crop Disease'},
+      {icon:'📊',ta:'சந்தை விலை',en:'Market Prices'},
+      {icon:'🏛️',ta:'அரசு திட்டம்',en:'Govt Schemes'},
+      {icon:'🤝',ta:'கூட்டு விற்பனை',en:'Collective Sale'},
+      {icon:'💳',ta:'கடன் மதிப்பெண்',en:'Credit Score'},
+      {icon:'🔍',ta:'போலி கண்டறிதல்',en:'Fake Detector'},
+      {icon:'📄',ta:'ஒப்பந்த காப்பு',en:'Contract Reader'},
+      {icon:'❄️',ta:'குளிர் சேமிப்பு',en:'Cold Storage'},
+      {icon:'🌱',ta:'பயிர் திட்டமிடல்',en:'Crop Planning'},
+      {icon:'🐛',ta:'பூச்சி கணிப்பு',en:'Pest Predictor'},
+      {icon:'♻️',ta:'கழிவை செல்வமாக்கு',en:'Waste to Wealth'},
+      {icon:'🌍',ta:'மண் ஆரோக்கியம்',en:'Soil Health'},
+      {icon:'🌤️',ta:'வானிலை கேலண்டர்',en:'Weather Calendar'},
+      {icon:'⚖️',ta:'சட்ட கேடயம்',en:'Legal Shield'},
+      {icon:'🆘',ta:'பேரிடர் மீட்பு',en:'Disaster Response'},
+      {icon:'🛒',ta:'நேரடி சந்தை',en:'D2C Market'},
+      {icon:'🏘️',ta:'குழு மையம்',en:'SHG Hub'},
+      {icon:'📦',ta:'இருப்பு மேலாண்மை',en:'Inventory Mgmt'},
+      {icon:'🏢',ta:'அரசு தளம்',en:'Govt Dashboard'},
+      {icon:'🏭',ta:'சிறு பதப்படுத்தல்',en:'Micro Processing'},
+      {icon:'💧',ta:'நீர் நுண்ணறிவு',en:'Water Intelligence'},
+      {icon:'🌸',ta:'மன நலம்',en:'Wellness'},
+      {icon:'👥',ta:'உழவர் சமூகம்',en:'Community'}
+    ];
+
+    function renderHeroPills() {
+      const scroll = document.getElementById('features-pills-scroll');
+      if (!scroll) return;
+      scroll.innerHTML = FEATURES_LIST.map((f, i) => `
+        <span class="fpill" style="animation-delay: ${0.2 + (i*0.05)}s">
+          ${f.icon} ${currentLang === 'ta' ? f.ta : f.en}
+        </span>
+      `).join('');
+    }
+
+    const TRANSLATIONS = {
+      ta: {
+        title: 'உங்கள் விவசாய உதவியாளர்',
+        tagline: 'தமிழக பெண் விவசாயிகளுக்கான செயற்கை நுண்ணறிவு குரல் உதவியாளர்',
+        stat1: 'அம்சங்கள்', stat2: 'மாவட்டங்கள்', stat3: 'குரல் AI',
+        login: 'உள்நுழைக', otp_btn: 'OTP அனுப்பு', demo_note: '📌 Demo: எந்த 10 இலக்க எண்ணும் பயன்படுத்தலாம்',
+        otp_sent: '✅ OTP அனுப்பப்பட்டது', verify: 'சரிபார்க்கவும் ✓', back: '← மாற்று',
+        onboard: 'உங்களை அறிமுகப்படுத்துங்கள்', start: 'வாணியை தொடங்கவும்! 🌱',
+        shg: 'சுய உதவி குழு உறுப்பினர் (SHG)', bank: 'வங்கி கணக்கு உள்ளது',
+        features_heading: '25+ AI அம்சங்கள்',
+      },
+      en: {
+        title: 'Your Farm Assistant',
+        tagline: 'AI-powered voice assistant for Tamil Nadu women farmers',
+        stat1: 'Features', stat2: 'Districts', stat3: 'Voice AI',
+        login: 'Login', otp_btn: 'Send OTP', demo_note: '📌 Demo: Any 10-digit number works',
+        otp_sent: '✅ OTP Sent', verify: 'Verify ✓', back: '← Change',
+        onboard: 'Tell us about yourself', start: 'Start VAANI! 🌱',
+        shg: 'SHG Member', bank: 'Has Bank Account',
+        features_heading: '25+ AI Features',
+      }
+    };
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('vaani_lang', lang);
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('lang-' + lang);
+      if(activeBtn) activeBtn.classList.add('active');
+      
+      renderHeroPills();
+      
+      // Trigger Google Translate
+      const iframe = document.querySelector('iframe.goog-te-menu-frame');
+      if (iframe) {
+         // This is a common hack to trigger Google Translate dropdown programmatically
+         const select = document.querySelector('.goog-te-combo');
+         if (select) {
+           select.value = lang;
+           select.dispatchEvent(new Event('change'));
+         }
+      } else {
+         const select = document.querySelector('.goog-te-combo');
+         if (select) {
+           select.value = lang;
+           select.dispatchEvent(new Event('change'));
+         }
+      }
+
+      const t = TRANSLATIONS[lang];
+      // Keep manual updates as well for structural integrity
+      const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+      if (lang === 'ta') {
+        set('title-sub', 'உங்கள் விவசாய உதவியாளர்');
+        set('hero-tagline', 'தமிழக பெண் விவசாயிகளுக்கான செயற்கை நுண்ணறிவு குரல் உதவியாளர்');
+        set('stat1', 'அம்சங்கள்'); set('stat2', 'மாவட்டங்கள்'); set('stat3', 'குரல் AI');
+        set('login-heading', 'உள்நுழைக');
+        set('otp-btn-text', 'OTP அனுப்பு');
+        set('demo-note', '📌 Demo: எந்த 10 இலக்க எண்ணும் பயன்படுத்தலாம்');
+        set('otp-sent-msg', '✅ OTP அனுப்பப்பட்டது');
+        document.getElementById('verify-btn').innerHTML = 'சரிபார்க்கவும் <span class="btn-arrow">✓</span>';
+        set('back-btn', '← மாற்று');
+        set('onboard-heading', 'உங்களை அறிமுகப்படுத்துங்கள்');
+        set('start-btn', 'வாணியை தொடங்கவும்! 🌱');
+        set('ob-shg-label', 'சுய உதவி குழு உறுப்பினர் (SHG)');
+        set('ob-bank-label', 'வங்கி கணக்கு உள்ளது');
+        set('features-heading', '25+ AI அம்சங்கள்');
+        document.getElementById('phone-input').placeholder = 'கைபேசி எண் / Phone Number';
+        document.getElementById('ob-name').placeholder = 'பெயர் / Name';
+        document.getElementById('ob-land').placeholder = 'நிலப்பரப்பு (ஏக்கர்) / Land (acres)';
+        document.getElementById('govt-id').placeholder = 'அலுவலர் எண் / Dept ID';
+        document.getElementById('govt-pass').placeholder = 'கடவுச்சொல் / Password';
+        const roleF = document.getElementById('role-farmer'); if(roleF) roleF.innerText = 'விவசாயி / Farmer';
+        const roleG = document.getElementById('role-govt'); if(roleG) roleG.innerText = 'அரசு / Govt';
+
+        set('fpill-1', '🔬 நோய் கண்டறிதல்');
+        set('fpill-2', '📊 சந்தை விலை');
+        set('fpill-3', '🏛️ அரசு திட்டம்');
+        set('fpill-4', '🤝 கூட்டு விற்பனை');
+        set('fpill-5', '⚖️ சட்ட கேடயம்');
+        set('fpill-6', '🌤 வானிலை');
+        set('fpill-7', '🌱 மண் ஆரோக்கியம்');
+        set('fpill-8', '💧 நீர் மேலாண்மை');
+        set('fpill-9', '♻️ கழிவு செல்வம்');
+        set('fpill-10', '🛒 நேரடி சந்தை');
+        
+        // Dropdown placeholders
+        let distOpts = document.getElementById('ob-district').options;
+        if (distOpts.length > 0) distOpts[0].text = 'மாவட்டம் தேர்ந்தெடுக்கவும்';
+        let cropOpts = document.getElementById('ob-crop').options;
+        if (cropOpts.length > 0) cropOpts[0].text = 'முதன்மை பயிர் / Primary Crop';
+        
+        // Irrigation
+        let irrOpts = document.getElementById('ob-irrigation').options;
+        if (irrOpts.length >= 5) {
+          irrOpts[0].text = 'மழை நீர் / Rain-fed';
+          irrOpts[1].text = 'சொட்டு நீர் / Drip';
+          irrOpts[2].text = 'கால்வாய் / Canal';
+          irrOpts[3].text = 'போர்வெல் / Borewell';
+          irrOpts[4].text = 'குளம் / Tank';
+        }
+      } else {
+        set('title-sub', 'Your Farm Assistant');
+        set('hero-tagline', 'AI-powered voice assistant for Tamil Nadu women farmers');
+        set('stat1', 'Features'); set('stat2', 'Districts'); set('stat3', 'Voice AI');
+        set('login-heading', 'Login');
+        set('otp-btn-text', 'Send OTP');
+        set('demo-note', '📌 Demo: Any 10-digit number works');
+        set('otp-sent-msg', '✅ OTP Sent');
+        document.getElementById('verify-btn').innerHTML = 'Verify <span class="btn-arrow">✓</span>';
+        set('back-btn', '← Change');
+        set('onboard-heading', 'Tell us about yourself');
+        set('start-btn', 'Start VAANI! 🌱');
+        set('ob-shg-label', 'SHG Member');
+        set('ob-bank-label', 'Has Bank Account');
+        set('features-heading', '25+ AI Features');
+        document.getElementById('phone-input').placeholder = 'Phone Number';
+        document.getElementById('ob-name').placeholder = 'Your Name';
+        document.getElementById('ob-land').placeholder = 'Land (acres)';
+        document.getElementById('govt-id').placeholder = 'Dept ID';
+        document.getElementById('govt-pass').placeholder = 'Password';
+        const roleFE = document.getElementById('role-farmer'); if(roleFE) roleFE.innerText = 'Farmer';
+        const roleGE = document.getElementById('role-govt'); if(roleGE) roleGE.innerText = 'Govt';
+
+        set('fpill-1', '🔬 Crop Disease');
+        set('fpill-2', '📊 Market Prices');
+        set('fpill-3', '🏛️ Govt Schemes');
+        set('fpill-4', '🤝 Collective Sale');
+        set('fpill-5', '⚖️ Legal Shield');
+        set('fpill-6', '🌤 Weather');
+        set('fpill-7', '🌱 Soil Health');
+        set('fpill-8', '💧 Water Mgmt');
+        set('fpill-9', '♻️ Waste to Wealth');
+        set('fpill-10', '🛒 D2C Market');
+        
+        // Dropdown placeholders
+        let distOpts = document.getElementById('ob-district').options;
+        if (distOpts.length > 0) distOpts[0].text = 'Select District';
+        let cropOpts = document.getElementById('ob-crop').options;
+        if (cropOpts.length > 0) cropOpts[0].text = 'Select Primary Crop';
+        
+        // Irrigation
+        let irrOpts = document.getElementById('ob-irrigation').options;
+        if (irrOpts.length >= 5) {
+          irrOpts[0].text = 'Rain-fed';
+          irrOpts[1].text = 'Drip Irrigation';
+          irrOpts[2].text = 'Canal';
+          irrOpts[3].text = 'Borewell';
+          irrOpts[4].text = 'Tank / Pond';
+        }
+      }
+      document.documentElement.lang = lang === 'ta' ? 'ta' : 'en';
+    }
+
+    async function loadDropdowns() {
+      const districtSel = document.getElementById('ob-district');
+      const cropSel = document.getElementById('ob-crop');
+      
+      const addOption = (sel, val, text) => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = text || val;
+        sel.appendChild(opt);
+      };
+
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const resp = await fetch(`${API}/api/market/crops-list`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
+        if (!resp.ok) throw new Error("API failed");
+        const data = await resp.json();
+        
+        (data.districts || []).forEach(d => addOption(districtSel, d));
+        (data.crops || []).forEach(c => addOption(cropSel, c));
+      } catch(e) {
+        // Fallback districts
+        const districts = ['Chennai','Coimbatore','Madurai','Thanjavur','Salem','Tirunelveli','Erode','Tiruchirappalli'];
+        districts.forEach(d => addOption(districtSel, d));
+        
+        // Fallback crops
+        const crops = ['paddy','tomato','onion','banana','sugarcane','cotton','groundnut'];
+        crops.forEach(c => addOption(cropSel, c));
+      }
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.login-step').forEach(s => s.classList.remove('active'));
+      document.getElementById(step).classList.add('active');
+    }
+
+    function sendOTP() {
+      const ph = document.getElementById('phone-input').value.trim();
+      if (ph.length !== 10 || isNaN(ph)) {
+        shake(document.getElementById('phone-input'));
+        return;
+      }
+      phoneNumber = ph;
+      const btn = document.getElementById('send-otp-btn');
+      btn.innerHTML = '<span class="spinner"></span>';
+      setTimeout(() => {
+        btn.innerHTML = 'OTP அனுப்பு <span class="btn-arrow">→</span>';
+        showStep('otp-step');
+        setupOTPInputs();
+      }, 1200);
+    }
+
+    function setupOTPInputs() {
+      const boxes = document.querySelectorAll('.otp-box');
+      boxes.forEach((box, i) => {
+        box.value = '';
+        box.addEventListener('input', e => {
+          if (box.value.length === 1 && i < boxes.length - 1) boxes[i+1].focus();
+        });
+        box.addEventListener('keydown', e => {
+          if (e.key === 'Backspace' && !box.value && i > 0) boxes[i-1].focus();
+        });
+      });
+      boxes[0].focus();
+    }
+
+    async function verifyOTP() {
+      const otp = [...document.querySelectorAll('.otp-box')].map(b => b.value).join('');
+      if (otp.length !== 6) { shake(document.getElementById('otp-inputs')); return; }
+      const btn = document.getElementById('verify-btn');
+      btn.innerHTML = '<span class="spinner"></span>';
+      
+      // 1. Try local first
+      const existing = localStorage.getItem('vaani_farmer');
+      if (existing) {
+        setTimeout(() => {
+            btn.innerHTML = '✅ சரிபார்க்கப்பட்டது';
+            window.location.href = 'dashboard.html';
+        }, 1000);
+        return;
+      }
+
+      // 2. Try Backend Search by Phone
+      try {
+        const res = await fetch(`${API}/api/farmer/login?phone=${phoneNumber}`);
+        if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem('vaani_farmer', JSON.stringify(data));
+            btn.innerHTML = '✅ மீண்டும் வருக! (Welcome Back)';
+            setTimeout(() => window.location.href = 'dashboard.html', 1200);
+            return;
+        }
+      } catch(e) { console.warn("Search failed", e); }
+
+      // 3. New User Onboarding
+      setTimeout(() => {
+        btn.innerHTML = '✅ சரிபார்க்கப்பட்டது';
+        setTimeout(() => showStep('onboarding-step'), 800);
+      }, 1500);
+    }
+
+    function demoLogin(role) {
+      let demoUser = {};
+      let btnId = 'demo-login-btn';
+
+      if (role === 'leader') {
+        demoUser = {
+          farmer_id: 'shg_leader_jeni',
+          name: 'லட்சுமி (Lakshimi)',
+          phone: '9000000001',
+          district: 'Coimbatore',
+          village: 'Othakalmandabam',
+          gender: 'female',
+          is_shg_leader: true,
+          shg_name: 'Kovai otk magalir kulu',
+          shg_id: 'shg_kovai_01',
+          shg_member: true,
+          member_count: 35,
+          inventory: ['Tomato', 'Onion', 'Paddy', 'Sugarcane', 'Corn', 'Groundnut']
+        };
+      } else if (role === 'husband_demo') {
+        demoUser = {
+          farmer_id: 'farmer_husband_01',
+          name: 'Palaniswamy',
+          phone: '9876543211',
+          district: 'Coimbatore',
+          village: 'Othakalmandabam',
+          gender: 'male',
+          crops: ['banana', 'coconut'],
+          land_size: 5,
+          irrigation_type: 'borewell',
+          shg_member: false,
+          bank_account: true,
+          credit_score: 450
+        };
+      } else if (role === 'govt') {
+        demoUser = { 
+            farmer_id: 'govt_ashwin', 
+            name: 'Ashwin', 
+            designation: 'DAO', 
+            department: 'Department of Agriculture',
+            is_govt: true, 
+            gender: 'male',
+            district: 'Coimbatore' 
+        };
+        btnId = 'govt-demo-btn';
+      } else if (role === 'buyer') {
+        demoUser = { 
+            farmer_id: 'buyer_naveen', 
+            name: 'Naveen', 
+            is_buyer: true, 
+            gender: 'male',
+            district: 'Coimbatore' 
+        };
+        btnId = 'buyer-demo-btn';
+      } else {
+        demoUser = {
+          farmer_id: 'farmer_jeni_01',
+          name: 'Jeni',
+          phone: '9876543210',
+          district: 'Coimbatore',
+          village: 'Othakalmandabam',
+          gender: 'female',
+          crops: ['paddy', 'tomato', 'sugarcane'],
+          land_size: 2,
+          irrigation_type: 'drip',
+          shg_member: true,
+          bank_account: true,
+          credit_score: 500
+        };
+      }
+      
+      localStorage.setItem('vaani_farmer', JSON.stringify(demoUser));
+      const btn = document.getElementById(btnId);
+      if (btn) btn.innerHTML = '<span class="spinner"></span>';
+      
+      setTimeout(() => {
+        if (btn) btn.innerHTML = '✅ உள்ளே செல்கிறது...';
+        window.location.href = 'dashboard.html';
+      }, 800);
+    }
+
+    function backToPhone() { showStep('phone-step'); }
+
+    function switchRole(role) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('role-' + role);
+      if(activeBtn) activeBtn.classList.add('active');
+
+      if (role === 'farmer') {
+        showStep('phone-step');
+        document.getElementById('demo-login-btn').innerHTML = '🚀 1-Click Jeni (Farmer) Demo';
+        document.getElementById('demo-login-btn').onclick = () => demoLogin('farmer');
+      } else if (role === 'leader') {
+        showStep('phone-step');
+        document.getElementById('demo-login-btn').innerHTML = '👑 1-Click Lakshimi (Leader) Demo';
+        document.getElementById('demo-login-btn').onclick = () => demoLogin('leader');
+      } else if (role === 'govt') {
+        showStep('govt-login-step');
+      } else {
+        showStep('buyer-login-step');
+      }
+    }
+
+    function loginGovt() {
+      const id = document.getElementById('govt-id').value;
+      const pass = document.getElementById('govt-pass').value;
+      if (id === 'admin' && pass === 'admin') {
+        const btn = document.getElementById('govt-login-btn');
+        btn.innerHTML = '✅ சரிபார்க்கப்பட்டது';
+        btn.style.background = 'var(--success)';
+        localStorage.setItem('vaani_farmer', JSON.stringify({ farmer_id: 'govt_admin', name: 'Government Admin', is_govt: true }));
+        setTimeout(() => window.location.href = 'dashboard.html', 1000);
+      } else {
+        shake(document.getElementById('govt-login-step'));
+        alert(currentLang === 'ta' ? 'தவறான உள்நுழைவு' : 'Invalid Credentials');
+      }
+    }
+
+    function loginBuyer() {
+      const id = document.getElementById('buyer-id').value;
+      const pass = document.getElementById('buyer-pass').value;
+      if (id === 'buyer' && pass === 'buyer') {
+        const btn = document.getElementById('buyer-login-btn');
+        btn.innerHTML = '✅ சரிபார்க்கப்பட்டது';
+        btn.style.background = 'var(--success)';
+        localStorage.setItem('vaani_farmer', JSON.stringify({ farmer_id: 'buyer_001', name: 'சந்தை வாங்குபவர்', is_buyer: true, district: 'Coimbatore' }));
+        setTimeout(() => window.location.href = 'dashboard.html', 1000);
+      } else {
+        shake(document.getElementById('buyer-login-step'));
+        alert(currentLang === 'ta' ? 'தவறான உள்நுழைவு' : 'Invalid Credentials');
+      }
+    }
+
+    async function completeOnboarding() {
+      const name = document.getElementById('ob-name').value.trim();
+      const district = document.getElementById('ob-district').value;
+      const crop = document.getElementById('ob-crop').value;
+      const land = parseFloat(document.getElementById('ob-land').value) || 1;
+      const irrigation = document.getElementById('ob-irrigation').value;
+      const gender = document.getElementById('ob-gender').value;
+      
+      const shgEl = document.getElementById('ob-shg');
+      const shg = shgEl ? shgEl.checked : false;
+      
+      const bankEl = document.getElementById('ob-bank');
+      const bank = bankEl ? bankEl.checked : true;
+
+      if (!name || !district || district === "" || district === "Select District" || district === "மாவட்டம் தேர்ந்தெடுக்கவும்") { 
+        alert(currentLang === 'ta' ? 'பெயர் மற்றும் மாவட்டம் தேவை' : 'Name and District are required'); 
+        return; 
+      }
+
+      const farmer = { 
+        name, 
+        phone: phoneNumber || 'demo_' + Date.now(), 
+        district, 
+        crops: crop && crop !== "Select Primary Crop" && crop !== "முதன்மை பயிர் / Primary Crop" ? [crop] : [], 
+        land_size: land, 
+        irrigation_type: irrigation, 
+        gender: gender,
+        shg_member: shg, 
+        bank_account: bank 
+      };
+
+      const btn = document.getElementById('start-btn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner"></span>';
+      btn.style.opacity = '0.8';
+
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        
+        const resp = await fetch(`${API}/api/farmer/register`, { 
+          method: 'POST', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify(farmer),
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        const data = await resp.json();
+        farmer.farmer_id = data.farmer_id || 'demo_' + Date.now();
+        localStorage.setItem('vaani_farmer', JSON.stringify(farmer));
+      } catch(e) {
+        console.error("Registration failed, using fallback UI", e);
+        farmer.farmer_id = 'demo_' + Date.now();
+        localStorage.setItem('vaani_farmer', JSON.stringify(farmer));
+      }
+
+      btn.style.opacity = '1';
+      btn.innerHTML = currentLang === 'ta' ? '✅ வெற்றி! திரைக்கு செல்கிறோம்...' : '✅ Success! Redirecting...';
+      btn.style.background = 'var(--success)';
+      
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+    }
+
+    function shake(el) {
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 600);
+    }
+
+    // Load saved lang on load
+    document.addEventListener('DOMContentLoaded', () => { 
+      const savedLang = localStorage.getItem('vaani_lang') || 'ta';
+      setTimeout(()=>setLang(savedLang), 500); 
+    });
+    if (document.readyState !== 'loading') { 
+      const savedLang = localStorage.getItem('vaani_lang') || 'ta';
+      setTimeout(()=>setLang(savedLang), 500); 
+    }
+  </script>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'ta', includedLanguages: 'en,ta', autoDisplay: false}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

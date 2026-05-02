@@ -1,0 +1,116 @@
+Traceback (most recent call last):
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\grpc_helpers.py", line 55, in error_remapped_callable
+    return callable_(*args, **kwargs)
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\grpc\_interceptor.py", line 276, in __call__
+    response, ignored_call = self._with_call(
+                             ~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<4 lines>...
+        compression=compression,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\grpc\_interceptor.py", line 331, in _with_call
+    return call.result(), call
+           ~~~~~~~~~~~^^
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\grpc\_channel.py", line 438, in result
+    raise self
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\grpc\_interceptor.py", line 314, in continuation
+    response, call = self._thunk(new_method).with_call(
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<4 lines>...
+        compression=new_compression,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\grpc\_channel.py", line 1173, in with_call
+    return _end_unary_response_blocking(state, call, True, None)
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\grpc\_channel.py", line 990, in _end_unary_response_blocking
+    raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.PERMISSION_DENIED
+	details = "Cloud Firestore API has not been used in project vaani1 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project=vaani1 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:142.250.207.202:443 {grpc_message:"Cloud Firestore API has not been used in project vaani1 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project=vaani1 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.", grpc_status:7}"
+>
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<string>", line 9, in main
+    res = await match_schemes(req)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Jenilia Karen\Documents\Projects\Hackathon Projects\Vaani\backend\routes\schemes.py", line 90, in match_schemes
+    save_document("welfare_claims", {"farmer_id": req.farmer_id, "schemes": schemes, "profile": profile_text})
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Jenilia Karen\Documents\Projects\Hackathon Projects\Vaani\backend\services\firebase_service.py", line 18, in save_document
+    db.collection(collection).document(doc_id).set(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\cloud\firestore_v1\document.py", line 169, in set
+    write_results = batch.commit(**kwargs)
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\cloud\firestore_v1\batch.py", line 63, in commit
+    commit_response = self._client._firestore_api.commit(
+        request=request,
+        metadata=self._client._rpc_metadata,
+        **kwargs,
+    )
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\cloud\firestore_v1\services\firestore\client.py", line 1451, in commit
+    response = rpc(
+        request,
+    ...<2 lines>...
+        metadata=metadata,
+    )
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\gapic_v1\method.py", line 128, in __call__
+    return wrapped_func(*args, **kwargs)
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+  File "C:\Users\Jenilia Karen\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\api_core\grpc_helpers.py", line 57, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Cloud Firestore API has not been used in project vaani1 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project=vaani1 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry. [reason: "SERVICE_DISABLED"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "firestore.googleapis.com"
+}
+metadata {
+  key: "serviceTitle"
+  value: "Cloud Firestore API"
+}
+metadata {
+  key: "containerInfo"
+  value: "vaani1"
+}
+metadata {
+  key: "consumer"
+  value: "projects/vaani1"
+}
+metadata {
+  key: "activationUrl"
+  value: "https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project=vaani1"
+}
+, locale: "en-US"
+message: "Cloud Firestore API has not been used in project vaani1 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project=vaani1 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+, links {
+  description: "Google developers console API activation"
+  url: "https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project=vaani1"
+}
+]

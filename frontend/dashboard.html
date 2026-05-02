@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Language" content="ta" />
+  <title>வாணி — Dashboard</title>
+  <meta name="description" content="VAANI Dashboard - Access all 20 AI-powered farm features for Tamil Nadu women farmers">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dashboard-page">
+
+  <!-- Top Bar -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="topbar-logo">வாணி</a>
+      <div>
+        <div class="topbar-farmer-name" id="tb-name">Loading...</div>
+        <div class="topbar-district" id="tb-district">—</div>
+      </div>
+    </div>
+    <div class="topbar-right" style="display:flex; align-items:center; gap:12px;">
+      <div class="lang-switcher" style="background:rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 6px; display: flex; gap: 4px; font-size: 0.8rem; font-weight: 600;">
+        <button id="dash-lang-ta" onclick="setDashLang('ta')" style="background: white; color: var(--primary); border: none; padding: 4px 10px; border-radius: 16px; cursor: pointer;">TA</button>
+        <button id="dash-lang-en" onclick="setDashLang('en')" style="background: transparent; color: white; border: none; padding: 4px 10px; border-radius: 16px; cursor: pointer;">EN</button>
+      </div>
+      <div id="google_translate_element" style="display:none;"></div>
+      <div id="radio-btn" onclick="toggleRadio()" title="VAANI வேளாண் செய்திகள் (Radio)" style="font-size:1.4rem; cursor:pointer; background:rgba(255,255,255,0.2); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:0.3s;">📻</div>
+      <div class="topbar-profile" id="tb-avatar" onclick="openProfile()">V</div>
+    </div>
+  </header>
+
+  <!-- Alert Strip -->
+  <div class="alert-strip" id="alert-strip">
+    <span class="alert-strip-icon">⚠️</span>
+    <span class="alert-strip-text" id="alert-text">
+      ⚠️ உங்கள் மாவட்டத்தில் தண்டு துளைப்பான் பூச்சி அறிக்கை உள்ளது &nbsp;&nbsp;|&nbsp;&nbsp;
+      📈 நெல் விலை 5% உயர்ந்துள்ளது &nbsp;&nbsp;|&nbsp;&nbsp;
+      🌧 நாளை மழை எதிர்பார்க்கப்படுகிறது
+    </span>
+  </div>
+  
+  <!-- AI Features Ribbon -->
+  <section class="features-pills-section">
+    <div class="features-pills-title">25+ AI Features</div>
+    <div class="features-pills-scroll" id="features-ribbon">
+      <!-- To be filled by JS -->
+    </div>
+  </section>
+
+  <!-- Voice & Manual Input Section -->
+  <section class="voice-section">
+    <p class="voice-subtitle">🎙️ பேசுங்கள் — வாணி கேட்கிறாள்</p>
+    <div class="voice-btn-wrap" id="voice-btn-wrap">
+      <div class="voice-ripple"></div>
+      <div class="voice-ripple"></div>
+      <div class="voice-ripple"></div>
+      <button id="voice-btn" onclick="toggleVoice()">🎙️</button>
+    </div>
+    <div class="voice-transcript" id="voice-transcript">நீங்கள் சொன்னது இங்கே தோன்றும்...</div>
+    
+    <!-- Manual Text Search -->
+    <div style="margin: 20px auto 0; max-width: 400px; padding: 0 16px;">
+      <div style="display: flex; gap: 8px; align-items: center; background: #fff; padding: 6px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <input type="text" id="manual-query-input" placeholder="தமிழில் தட்டச்சு செய்யவும்..." style="flex:1; border:none; padding:10px 14px; outline:none; border-radius: 20px; font-size: 0.95rem; width: 100%;">
+        <button onclick="submitManualQuery()" style="background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 20px; font-weight: bold; cursor: pointer;">கேள்</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Cards -->
+  <section class="features-section">
+    <div class="section-title">அனைத்து சேவைகளும்</div>
+    <div class="features-grid" id="features-grid">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="scrollToTop()">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">முகப்பு</span>
+    </div>
+    <div class="nav-item" onclick="openFeature('market_prices')">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">சந்தை</span>
+    </div>
+    <div class="nav-item" id="nav-shg" onclick="openFeature('shg_community')">
+      <span class="nav-icon">👩‍👩‍👧‍👧</span>
+      <span class="nav-label">SHG குழு</span>
+    </div>
+    <div class="nav-item" onclick="openProfile()">
+      <span class="nav-icon">👩‍🌾</span>
+      <span class="nav-label">சுயவிவரம்</span>
+    </div>
+  </nav>
+
+  <!-- MODAL CONTAINER -->
+  <div id="modal-container"></div>
+
+  <script src="app.js?v=2"></script>
+  <script src="features1.js?v=2"></script>
+  <script src="features2.js?v=2"></script>
+  <script src="features3.js?v=2"></script>
+  <script src="features4.js?v=2"></script>
+  <script src="features5.js?v=2"></script>
+  <script src="features6.js?v=2"></script>
+  <script src="features_shg.js"></script>
+  <script src="features_sentinel.js"></script>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'ta', includedLanguages: 'en,ta', autoDisplay: false}, 'google_translate_element');
+    }
+
+    function setDashLang(lang) {
+      localStorage.setItem('vaani_lang', lang);
+      document.getElementById('dash-lang-ta').style.background = lang === 'ta' ? 'white' : 'transparent';
+      document.getElementById('dash-lang-ta').style.color = lang === 'ta' ? 'var(--primary)' : 'white';
+      
+      document.getElementById('dash-lang-en').style.background = lang === 'en' ? 'white' : 'transparent';
+      document.getElementById('dash-lang-en').style.color = lang === 'en' ? 'var(--primary)' : 'white';
+
+      // Trigger Google Translate
+      const iframe = document.querySelector('iframe.goog-te-menu-frame');
+      if (iframe) {
+         const select = document.querySelector('.goog-te-combo');
+         if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
+      } else {
+         const select = document.querySelector('.goog-te-combo');
+         if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
+      }
+    }
+
+    // Auto-load saved language
+    document.addEventListener('DOMContentLoaded', () => { 
+      const savedLang = localStorage.getItem('vaani_lang') || 'ta';
+      setTimeout(()=>setDashLang(savedLang), 500); 
+    });
+    // Fallback if DOM already loaded
+    if (document.readyState !== 'loading') { 
+      const savedLang = localStorage.getItem('vaani_lang') || 'ta';
+      setTimeout(()=>setDashLang(savedLang), 500); 
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
